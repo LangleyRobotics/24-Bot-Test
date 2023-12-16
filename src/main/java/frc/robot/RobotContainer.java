@@ -24,12 +24,10 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 //Constants Imports 
 import frc.robot.Constants.AutoConstants;
-//import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ManipulatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.Buttons;
 import frc.robot.Constants.DriveConstants;
-//import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.AllForNaught;
 //import frc.robot.Trajectories;
 
@@ -41,11 +39,16 @@ import frc.robot.commands.RumbleCmd;
 import frc.robot.commands.SwerveControllerCmd;
 import frc.robot.commands.OTFTrajectoryFactory;
 import frc.robot.commands.ShooterTriggerCmd;
+import frc.robot.commands.IntakeCmd;
+import frc.robot.commands.RumbleCmd;
+import frc.robot.commands.SallyCmd;
+import frc.robot.commands.SullyCmd;
 
 //Subsystem Imports
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ManipulatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -71,6 +74,8 @@ public class RobotContainer {
   private final DriveSubsystem robotDrive = new DriveSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final ManipulatorSubsystem robotManipulator = new ManipulatorSubsystem();
+
 
 
 
@@ -110,23 +115,47 @@ public class RobotContainer {
             () -> -driverController.getLeftY(),
             () -> -driverController.getLeftX(),
             () -> -driverController.getRightX(),
-            () -> false,
+            () -> true,
             () -> false));
 
     shooterSubsystem.setDefaultCommand(
       new ShooterTriggerCmd(
         shooterSubsystem,
-        () -> operatorController.getRightBumper(),
-        () -> operatorController.getLeftBumper()));
-    
+        //SWITCH BACK TO OPERATOR CONTROLLER
+        () -> driverController.getRightBumper(),
+        () -> driverController.getLeftBumper()));
+
+    robotManipulator.setDefaultCommand(new IntakeCmd(robotManipulator, () -> 0.0, 0));
+
+
 
     //lightingSubsystem.setDefaultCommand(lightingSubsystem.splitColor(Color.kAquamarine, Color.kDarkCyan));
 
 
-    //Load in paths from Trajectories as drive commands using the AutoCommandFactory
-    SequentialCommandGroup S_Curve = robotDrive.AutoCommandFactory(Trajectories.defaultTrajectory);
 
-  
+
+
+    //**Load in paths from Trajectories as drive commands using the AutoCommandFactory**
+
+    //BACKUP AUTO
+    SequentialCommandGroup goStraight = robotDrive.AutoCommandFactory(Trajectories.goStraight);
+   
+    //VOID AUTO
+    SwerveControllerCmd blank = new SwerveControllerCmd(
+      robotDrive,
+      () -> 0.0,
+      () -> 0.0,
+      () -> 0.0,
+      () -> true,
+      () -> false);
+
+    //ADD AUTONOMOUS COMMANDS TO SHUFFLEBOARD
+    autoChooser.addOption("Void", blank);
+    autoChooser.addOption("Go Straight Auto", goStraight);
+
+
+
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -140,19 +169,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
      
-
+    //Rumble controllers
     new JoystickButton(driverController, Buttons.LB).whileTrue(new RumbleCmd(operatorController, 1, 1.00));
-    //new JoystickButton(driverController, Buttons.RB).whileTrue(new RumbleCmd(operatorController, 2, 1.00));
-
-    
     new JoystickButton(operatorController, Buttons.L3).whileTrue(new RumbleCmd(driverController, 1, 1.00));
     new JoystickButton(operatorController, Buttons.R3).whileTrue(new RumbleCmd(driverController, 2, 1.00));
 
-
-
-
-    //Cone shelf setpoint
-    //new JoystickButton(operatorController, Buttons.R3).toggleOnTrue(new LiftAutoCmd(robotLift, LiftConstants.kConeShelfSetPoint));
 
     //Zero Heading
     new JoystickButton(driverController, Buttons.X).toggleOnTrue(new AllForNaught(robotDrive));
@@ -180,17 +201,6 @@ public class RobotContainer {
     new POVButton(driverController, Buttons.UP_ARR).whileTrue(new SwerveControllerCmd(robotDrive, () -> DriveConstants.kSlowDriveCoefficient, () -> 0.0, () -> 0.0, () -> true,  () -> false));
     new POVButton(driverController, Buttons.RIGHT_ARR).whileTrue(new SwerveControllerCmd(robotDrive, () -> 0.0, () -> -DriveConstants.kSlowDriveCoefficient, () -> 0.0, () -> true,  () -> false));
     new POVButton(driverController, Buttons.LEFT_ARR).whileTrue(new SwerveControllerCmd(robotDrive, () -> 0.0, () -> DriveConstants.kSlowDriveCoefficient, () -> 0.0, () -> true,  () -> false));
-
-
-    //AutoBalance in teleop using button
-      new JoystickButton(driverController, Buttons.A).whileTrue(new SwerveControllerCmd(robotDrive, 
-      () -> (MathMethods.speedMax(AutoConstants.kAutoBalanceSpeedFactor*Math.sin(Math.toRadians(robotDrive.getPitch())), AutoConstants.kAutoBalanceMaxSpeedMetersPerSecond, AutoConstants.kAutoBalanceDeadbandDegrees, AutoConstants.kAutoBalanceMinSpeed, () -> robotDrive.getPitch())),
-      () -> (-MathMethods.speedMax(AutoConstants.kAutoBalanceSpeedFactor*Math.sin(Math.toRadians(robotDrive.getRoll())), AutoConstants.kAutoBalanceMaxSpeedMetersPerSecond, AutoConstants.kAutoBalanceDeadbandDegrees, AutoConstants.kAutoBalanceMinSpeed, () -> robotDrive.getRoll())),
-      () -> (0.0), () -> false,  () -> false));
-      
-    //Experimental AutoBalance PLEASE TEST
-    //new JoystickButton(driverController, Buttons.A).whileTrue(new SwerveControllerCmd(robotDrive, true));
-
   }
 
 

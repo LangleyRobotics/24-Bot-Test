@@ -47,35 +47,36 @@ public final class Constants {
     public static final int kFrontRightTurningMotorPort = 3;
     public static final int kRearRightTurningMotorPort = 7;
 
-
-
-    public static final boolean kFrontLeftTurningMotorReversed = true;
-    public static final boolean kRearLeftTurningMotorReversed = true;
+    //Before = all true
     public static final boolean kFrontRightTurningMotorReversed = true;
     public static final boolean kRearRightTurningMotorReversed = true;
+    public static final boolean kRearLeftTurningMotorReversed = true;
+    public static final boolean kFrontLeftTurningMotorReversed = true;
 
-    public static final boolean kFrontLeftDriveMotorReversed = false;
-    public static final boolean kRearLeftDriveMotorReversed = false;
-    public static final boolean kFrontRightDriveMotorReversed = true;
-    public static final boolean kRearRightDriveMotorReversed = true;
+    //Before = false false true true = no turn yes straight
+    //true false false true = yes turn no straight
+    public static final boolean kFrontRightDriveMotorReversed = false;
+    public static final boolean kRearRightDriveMotorReversed = false;
+    public static final boolean kRearLeftDriveMotorReversed = true;
+    public static final boolean kFrontLeftDriveMotorReversed = true;
 
     //CAN IDs for Encoders on Swerve Modules
-    public static final int kFrontLeftAbsEncoderPort = 19;
-    public static final int kRearLeftAbsEncoderPort = 18;
     public static final int kFrontRightAbsEncoderPort = 16;
     public static final int kRearRightAbsEncoderPort = 17;
+    public static final int kRearLeftAbsEncoderPort = 18;
+    public static final int kFrontLeftAbsEncoderPort = 19;
     
-    public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
-    public static final boolean kRearLeftDriveAbsoluteEncoderReversed = false;
+    //Before = all false
     public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
     public static final boolean kRearRightDriveAbsoluteEncoderReversed = false;
+    public static final boolean kRearLeftDriveAbsoluteEncoderReversed = false;
+    public static final boolean kFrontLeftDriveAbsoluteEncoderReversed = false;
 
     //Fix Front and rear left offsets
-    //54.7 -106.3 106.5 -113.5
-    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(48.7);
-    public static final double kRearLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-107.6);
-    public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(101.9);
-    public static final double kRearRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(-119.35);
+    public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(-42-45);
+    public static final double kRearRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(105-45);
+    public static final double kRearLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(107-45);
+    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-88-45);
 
 
     public static final double kTrackWidth = 0.633;
@@ -159,7 +160,7 @@ public final class Constants {
 
     public static final double kLiftReduction = 1/5;
 
-    //Limelights i think
+    //Limelights
     public static final double kTimmyHigh = 1.95;
     public static final double kTimmyMid = 1.3;
     public static final double kMidTimmy = 0.945;
