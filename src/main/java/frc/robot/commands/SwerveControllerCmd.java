@@ -64,9 +64,11 @@ public class SwerveControllerCmd extends CommandBase {
     @Override
     public void execute() {
         // 1. Get real-time Controller inputs
+        //aaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhhhhhhhh emily dmyhng vommrnt hrtr
+        double ySpeed = -ySpdFunction.get();
         double xSpeed = xSpdFunction.get();
-        double ySpeed = ySpdFunction.get();
-        double turningSpeed = turningSpdFunction.get();
+        //I PUT A NEGATIVE ON THE TURNING SPEED AAAHHHHH
+        double turningSpeed = -1 * turningSpdFunction.get();
 
         // 2. Apply deadband
         xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;

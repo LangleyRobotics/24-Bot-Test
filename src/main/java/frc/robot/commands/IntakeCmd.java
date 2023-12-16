@@ -32,7 +32,6 @@ public class IntakeCmd extends CommandBase{
         double velocity = -speed*dir;
 
         manipulatorSubsystem.setIntakeMotor(velocity);
-        manipulatorSubsystem.setClawMotor(ManipulatorConstants.kClawMotorSpeed*dir);
 
     
     }
@@ -40,7 +39,6 @@ public class IntakeCmd extends CommandBase{
     @Override
     public void end(boolean interrupted) {
         manipulatorSubsystem.stopIntakeMotor();
-        manipulatorSubsystem.stopClawMotor();
     }
 
     @Override

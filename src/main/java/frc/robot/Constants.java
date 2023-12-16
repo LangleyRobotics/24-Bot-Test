@@ -75,8 +75,8 @@ public final class Constants {
     //Fix Front and rear left offsets
     public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(-42-45);
     public static final double kRearRightDriveAbsoluteEncoderOffsetRad = Math.toRadians(105-45);
-    public static final double kRearLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(107-45);
-    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-88-45);
+    public static final double kRearLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(120-45);
+    public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.toRadians(-82-45);
 
 
     public static final double kTrackWidth = 0.633;
@@ -85,10 +85,11 @@ public final class Constants {
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2), //+- = Front Right
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2), //++ = Front Left
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), //-- = Rear Right
+            new Translation2d(-kWheelBase / 2, kTrackWidth / 2)); //-+ = Rear Left
+
 
     public static final boolean kGyroReversed = false;
 
@@ -158,14 +159,13 @@ public final class Constants {
     public static final int kLiftMotorRightPort = 9;
     public static final int kLiftMotorLeftPort = 10;
 
-    public static final double kLiftReduction = 1/5;
 
     //Limelights
     public static final double kTimmyHigh = 1.95;
     public static final double kTimmyMid = 1.3;
     public static final double kMidTimmy = 0.945;
 
-    public static final double kShooterMotorSpeed = 0.5;
+    public static final double kShooterMotorSpeed = 1;
   }
 
   public static final class OIConstants {
@@ -180,15 +180,18 @@ public final class Constants {
   }
 
   public static final class ManipulatorConstants {
-    public static final int kClawMotor = 11;
-    public static final int kIntakeMotor = 14;
-    public static final double kClawMotorSpeed = 1.0; //value from 0-1
-    public static final double kIntakeMotorSpeed = 0.69; //value from 0-1
+    public static final int kIntakeMotor = 11;
+    public static final double kIntakeMotorSpeed = 0.45; //value from 0-1
   }
 
   public static final class PneumaticsConstants {
     public static final int kSullySolenoid = 7;
-    public static final int kSallySolenoid = 0; // placeholder - see when piston installed
+  }
+
+  public static final class DropperConstants {
+    public static final int kDropperMotor = 12;
+    public static final double kDropperMotorSpeed = 0.05;
+
   }
   
   public static final class LimelightConstants {

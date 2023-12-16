@@ -14,11 +14,15 @@ public class ShooterTriggerCmd extends CommandBase {
   private final ShooterSubsystem shooterSubsystem;
   private final Supplier<Boolean> shooterPositiveDirFunction;
   private final Supplier<Boolean> shooterNegativeDirFunction;
+  private final Supplier<Boolean> shooterHalfPositiveDirFunction;
+  private final Supplier<Boolean> shooterHalfNegativeDirFunction;
   
-  public ShooterTriggerCmd(ShooterSubsystem shooterSubsystem, Supplier<Boolean> shooterPositiveDirFunction, Supplier<Boolean> shooterNegativeDirFunction) {
+  public ShooterTriggerCmd(ShooterSubsystem shooterSubsystem, Supplier<Boolean> shooterNegativeDirFunction, Supplier<Boolean> shooterPositiveDirFunction,Supplier<Boolean> shooterHalfNegativeDirFunction,Supplier<Boolean> shooterHalfPositiveDirFunction) {
     this.shooterSubsystem = shooterSubsystem;
     this.shooterNegativeDirFunction = shooterNegativeDirFunction;
     this.shooterPositiveDirFunction = shooterPositiveDirFunction;
+    this.shooterHalfNegativeDirFunction = shooterHalfNegativeDirFunction;
+    this.shooterHalfPositiveDirFunction = shooterHalfPositiveDirFunction;
 
     addRequirements(shooterSubsystem);
   }
@@ -34,6 +38,8 @@ public class ShooterTriggerCmd extends CommandBase {
     //are the buttons pressed
     boolean positiveDir = shooterPositiveDirFunction.get();
     boolean negativeDir = shooterNegativeDirFunction.get();
+    boolean halfNegativeDir = shooterHalfNegativeDirFunction.get();
+    boolean halfPositiveDir = shooterHalfPositiveDirFunction.get();
 
     double velocity = 0;
 
@@ -41,6 +47,10 @@ public class ShooterTriggerCmd extends CommandBase {
       velocity = ShooterConstants.kShooterMotorSpeed;
     } else if(negativeDir) {
       velocity = -1 * ShooterConstants.kShooterMotorSpeed;
+    }else if(halfNegativeDir) {
+      velocity = ShooterConstants.kShooterMotorSpeed/1.25;
+    }else if(halfPositiveDir) {
+      velocity = -1 * ShooterConstants.kShooterMotorSpeed/1.25;
     }
 
     shooterSubsystem.setShooterMotor(velocity);

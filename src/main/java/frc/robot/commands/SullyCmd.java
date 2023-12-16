@@ -7,7 +7,7 @@ import frc.robot.subsystems.PneumaticsSubsystem;
 
 public class SullyCmd extends CommandBase{
     private final PneumaticsSubsystem pneumaticsSubsystem;
-
+    private long lastActivationTime;
 
     public SullyCmd(PneumaticsSubsystem pneumaticsSubsystem) {
         this.pneumaticsSubsystem = pneumaticsSubsystem;
@@ -17,6 +17,7 @@ public class SullyCmd extends CommandBase{
     @Override
     public void initialize() {
         pneumaticsSubsystem.toggleSully();
+        lastActivationTime=System.currentTimeMillis();
     }
 
     @Override
@@ -25,12 +26,12 @@ public class SullyCmd extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-
+            //pneumaticsSubsystem.toggleSully();
     }
 
     @Override
     public boolean isFinished() {
-        return true;
+        return System.currentTimeMillis()-lastActivationTime>1000;
     }
 
 

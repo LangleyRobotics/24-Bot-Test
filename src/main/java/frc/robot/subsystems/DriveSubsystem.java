@@ -186,7 +186,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getRotation2d() {
-      return Rotation2d.fromDegrees(getHeading());
+      return m_gyro.getRotation2d();
   }
 
   public double getRoll() {
@@ -329,10 +329,15 @@ public class DriveSubsystem extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, Constants.kMaxSpeedMetersPerSecond);
-    frontLeft.setDesiredState(swerveModuleStates[0]);
-    frontRight.setDesiredState(swerveModuleStates[1]);
-    rearLeft.setDesiredState(swerveModuleStates[2]);
-    rearRight.setDesiredState(swerveModuleStates[3]);
+    // frontLeft.setDesiredState(swerveModuleStates[0]);
+    // frontRight.setDesiredState(swerveModuleStates[1]);
+    // rearLeft.setDesiredState(swerveModuleStates[2]);
+    // rearRight.setDesiredState(swerveModuleStates[3]);
+
+    frontRight.setDesiredState(swerveModuleStates[0]);
+    frontLeft.setDesiredState(swerveModuleStates[1]);
+    rearRight.setDesiredState(swerveModuleStates[2]);
+    rearLeft.setDesiredState(swerveModuleStates[3]);
   }
 
   public void stopModules() {
@@ -370,7 +375,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Math.toDegrees(MathMethods.moduloAngle(Math.toRadians(m_gyro.getRotation2d().getDegrees())));
+    return m_gyro.getRotation2d().getDegrees();
   }
 
   /**
